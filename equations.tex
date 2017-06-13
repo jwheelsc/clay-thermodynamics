@@ -1,0 +1,93 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+\usepackage{mhchem}
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{Enthalpy calculator}
+\author{Jeff Crompton}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+
+\section{The equations}
+
+In this section, I try to rewrite equations 9--14 from Blanc et al. (2015) to provide more clarity on the index notation and logic of the equations. To briefly summarize the methods of Blanc et al. (2015), the total change in enthalpy of a phyllosilicate with a non-idealized composition at standard state can be estimated throug the addition of two enthalpy terms: 1) the sum of the enthalpies of foramtion of the oxides for each cation in the clay mineral and 2) the enthalpy of mixing of cations within a given site for each site in the clay mineral. The contribution from 1) can be easily calculated because the enthalpy of formation of oxides is well known from experimental data. To estimate values for a site specific enthalpy term that is required to calculate the mixing energy, Blanc et al. (2015) rely on a polyhdra decompostition method discussed in their \emph{mathematical formalism} section on page 16. Together, terms 1) and 2) are written as,
+
+\begin{equation}
+\rm \Delta H_f^o(phyllo)
+ = \sum_{i=1}^{n_c} k_i\,n_i\,\Delta H_f^o(M_iO_{x_i})_{(c)}+\Delta H_{f,Ox}^o,
+\label{eq1}
+\end{equation}
+where $\rm n_i$ is the molar number of the $\rm i{th}$ cation (M) in the phyllosilicate, $\rm x_i = \frac{z}{2}$ (i.e. the half charge of the cation), and $\rm k_i$ is the number of parts M within an oxide. For example, consider \ce{Fe2O3} forming the oxide for \ce{Fe^{+3}}, whereby k=2. But for one part Fe, then $\rm M_iO_{x_i}$ is written  as \ce{FeO3/2}. The first term in \ref{eq1} constitutes the bulk of the enthalpy and represents the sum of the enhtalpy of formation of the oxide for cation M. The second term represents the mixing energy of cations among specific sites as,
+
+\begin{equation}
+\rm \Delta H_{f,Ox}^o = -\frac{1}{N}\,\sum_{k=1}^{n_s-1}\,\sum_{l=1}^{n_s}\,\chi_k\,\chi_l\,(\Delta_HO^=site_l-\Delta_HO^=site_k),
+\label{eq2}
+\end{equation}
+where $\rm \Delta_HO^=site$ is the enthalpy of a given site, N is the total number of oxygen atoms in phyllosilicate and $\rm \chi$ is the fraction oxygen atoms for a given site, written as, 
+\begin{equation}
+\rm \chi_s = \frac{1}{N}\sum_{i=1}^{n_{c_s}} n_i\,x_i.
+\label{eq3}
+\end{equation}
+In \ref{eq3}, $\rm n_{c_s}$ are the number of different cations in a given site, where the sites are octaherdral (M), tetrahedral (T), interlayer (I) and (H) hydrogen. Subscripts k and l in \ref{eq2} are dummy variables for the index s in equation \ref{eq3}. For consistecy, the index i always denotes a specific cation, whereas s denotes a specific site. The cation distribution amongst the site is a function of the clay type, and is outlined below in section... The number of oxygen atoms can be verified by summing all $\chi_s$ over the $\rm n_s$ sites as $\rm 1 = \sum_{s=1}^{n_s}\chi_s$. Lastly 
+
+\begin{equation}
+\rm \Delta_HO^=site_s = \frac{\sum_{i}^{n_{c_s}}\,n_i\,x_i\,\Delta_HO^=M_i^{z+}(clay)}{\sum_{i}^{n_{c_s}}\,n_i\,x_i} +
+\end{equation}
+\begin{equation}
+\rm k_{mix}\,\sum_{p=1}^{n_{c_s}}\,\sum_{q=p+1}^{n_{c_s}-1}\,\chi_p\,\chi_q\,(\Delta_HO^=M_p^{z+}(clay)-\Delta_HO^=M_q^{z+}(clay))
+\end{equation}
+
+\end{document}
