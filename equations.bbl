@@ -1,0 +1,34 @@
+\begin{thebibliography}{5}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname selectlanguage\endcsname\relax
+  \def\selectlanguage#1{\relax}\fi
+
+\bibitem[Blanc and others, 2015]{Blanc2015}
+Blanc, Philippe, Philippe Vieillard, H{\'e}l{\`e}ne Gailhanou, St{\'e}phane
+  Gaboreau, {\'E}ric Gaucher, Claire~I Fialips, Beno{\^\i}t Mad{\'e} and Eric
+  Giffaut, 2015. A generalized model for predicting the thermodynamic
+  properties of clay minerals, {\em American journal of science\/}, {\bf
+  315}(8), 734--780.
+
+\bibitem[Chermak and Rimstidt, 1989]{Chermak1989}
+Chermak, John~A and J~Donald Rimstidt, 1989. Estimating the thermodynamic
+  properties (Delta G of and Delta H of) of silicate minerals at 298 K from the
+  sum of polyhedral contributions, {\em American Mineralogist\/}, {\bf
+  74}(9-10), 1023--1031.
+
+\bibitem[Faure, 1998]{Faure1998}
+Faure, Gunter, 1998. Principles and applications of geochemistry: a
+  comprehensive textbook for geology students, Prentice Hall.
+
+\bibitem[Vieillard, 1994]{Vieillard1994}
+Vieillard, Philippe, 1994. Prediction of enthalpy of formation based on refined
+  crystal structures of multisite compounds: Part 1. Theories and examples,
+  {\em Geochimica et Cosmochimica Acta\/}, {\bf 58}(19), 4049--4063.
+
+\bibitem[Vieillard, 2000]{Vieillard2000}
+Vieillard, Philippe, 2000. A new method for the prediction of Gibbs free
+  energies of formation of hydrated clay minerals based on the
+  electronegativity scale, {\em Clays and Clay Minerals\/}, {\bf 48}(4),
+  459--473.
+
+\end{thebibliography}

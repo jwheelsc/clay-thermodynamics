@@ -1,35 +1,78 @@
-% !TEX TS-program = pdflatex
-% !TEX encoding = UTF-8 Unicode
-
-% This is a simple template for a LaTeX document using the "article" class.
-% See "book", "report", "letter" for other types of document.
-
-\documentclass[11pt]{article} % use larger type; default would be 10pt
+\documentclass[12pt]{article} % use larger type; default would be 10pt
 
 \usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
 
-%%% Examples of Article customizations
-% These packages are optional, depending whether you want the features they provide.
-% See the LaTeX Companion or other references for full information.
 
-%%% PAGE DIMENSIONS
-\usepackage{geometry} % to change the page dimensions
-\geometry{a4paper} % or letterpaper (US) or a5paper or....
-% \geometry{margin=2in} % for example, change the margins to 2 inches all round
-% \geometry{landscape} % set up the page for landscape
-%   read geometry.pdf for detailed page layout information
+\usepackage{fullpage}
 
 \usepackage{graphicx} % support the \includegraphics command and options
-\usepackage{mhchem}
-% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{float}
+ %\usepackage[UKenglish]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{verbatim}
+%\usepackage{subfigure}
+\usepackage{float}
+\usepackage[version=3]{mhchem}
+\usepackage[font=small,labelfont=bf]{caption}
+%\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{graphics}
+%\usepackage[applemac]{inputenc}
+\usepackage{setspace}
+\usepackage{rotating}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage[titletoc]{appendix}
+
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{-5pt}\vspace{5pt}}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{-5pt}\vspace{0pt}}m{#1}}
+
+\usepackage{supertabular}
+
+\usepackage{amssymb}
+
+%\usepackage{url,hyperref}
+
+
+
+%\usepackage[a4paper=true,ps2pdf=true,pagebackref=true]{hyperref}
+
+ \setlength{\headheight}{11pt}
+  \numberwithin{equation}{section}
+ \numberwithin{table}{section}
+  \numberwithin{figure}{section}
+
+%  \topmargin = 16pt
+ % \voffset = -40pt
+  %\footskip = 15pt
+\usepackage[top=0.8in, bottom=1.2in, left=0.8in, right=0.8in]{geometry}
+
+\headsep = 10pt
+%\oddsidemargin = 0.65in
+%\voffset = -0.2in
+%\textheight = 609pt
+%\footskip = 1.2in
+
+\usepackage{natbib}
+\usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
 
 %%% PACKAGES
 \usepackage{booktabs} % for much better looking tables
 \usepackage{array} % for better arrays (eg matrices) in maths
 \usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
 \usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
-\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+%\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
 % These packages are all incorporated in the memoir class to one degree or another...
+\usepackage{epstopdf}
+
+
 
 %%% HEADERS & FOOTERS
 \usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
@@ -51,43 +94,146 @@
 
 %%% END Article customizations
 
-%%% The "real" document content comes below...
+\begin{document}
 
-\title{Enthalpy calculator}
-\author{Jeff Crompton}
+%\rhead{Jeff Crompton, \today }
+%
+%\vspace{1cm}
+%
+%\centerline{\bf{The distribution of hydraulic head in subglacial till}}
+%
+%\vspace{1cm}
+
+\title{A calculator for the enthalpy of phyllosilicates based on \cite{Blanc2015}}
+\author{Jeff Crompton, jcrompto@sfu.ca}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
-
-\begin{document}
 \maketitle
+\newpage
 
-\section{The equations}
+\section{Equations for enthalpy calculations}
 
-In this section, I try to rewrite equations 9--14 from Blanc et al. (2015) to provide more clarity on the index notation and logic of the equations. To briefly summarize the methods of Blanc et al. (2015), the total change in enthalpy of a phyllosilicate with a non-idealized composition at standard state can be estimated throug the addition of two enthalpy terms: 1) the sum of the enthalpies of foramtion of the oxides for each cation in the clay mineral and 2) the enthalpy of mixing of cations within a given site for each site in the clay mineral. The contribution from 1) can be easily calculated because the enthalpy of formation of oxides is well known from experimental data. To estimate values for a site specific enthalpy term that is required to calculate the mixing energy, Blanc et al. (2015) rely on a polyhdra decompostition method discussed in their \emph{mathematical formalism} section on page 16. Together, terms 1) and 2) are written as,
+In this section, I rewrite equations 9--14 from \cite{Blanc2015} to provide more clarity on the index notation and to remove typos and ambiguities in \cite{Blanc2015}. The following is only a supplement to the \emph{Enthalpy prediction model development} section in \cite{Blanc2015}, and likely does not provide a stand alone understanding of the enthalpy calculations. I was not able to create this calculator from reading the paper alone. I had to rely on e-mail communications with P. Vieillard (second author) and P. Blanc, and well as older references such as \cite{Chermak1989}, \cite{Vieillard2000} and \cite{Vieillard1994}. 
+
+In brief summary to the methods of \cite{Blanc2015}, the total change in enthalpy of a phyllosilicate with a non-idealized composition at standard state can be estimated through the addition of two enthalpy terms: term 1) the sum of the enthalpies of formation of the oxides for each cation in the clay mineral and term 2) the enthalpy of mixing of cations within a given site for each site in the clay mineral. The contribution from term 1) comprises the bulk of the enthalpy and can be easily calculated given that the enthalpy of formation of oxides is well known from experimental data. To estimate values for a site specific enthalpy (term 2) that is required to calculate the mixing energy, \cite{Blanc2015} rely on a polyhedral decomposition method discussed in their \emph{Mathematical formalism} section (p. 16). Together, terms 1) and 2) are written as,
 
 \begin{equation}
 \rm \Delta H_f^o(phyllo)
  = \sum_{i=1}^{n_c} k_i\,n_i\,\Delta H_f^o(M_iO_{x_i})_{(c)}+\Delta H_{f,Ox}^o,
 \label{eq1}
 \end{equation}
-where $\rm n_i$ is the molar number of the $\rm i{th}$ cation (M) in the phyllosilicate, $\rm x_i = \frac{z}{2}$ (i.e. the half charge of the cation), and $\rm k_i$ is the number of parts M within an oxide. For example, consider \ce{Fe2O3} forming the oxide for \ce{Fe^{+3}}, whereby k=2. But for one part Fe, then $\rm M_iO_{x_i}$ is written  as \ce{FeO3/2}. The first term in \ref{eq1} constitutes the bulk of the enthalpy and represents the sum of the enhtalpy of formation of the oxide for cation M. The second term represents the mixing energy of cations among specific sites as,
+where $\rm n_i$ is the molar number of the $\rm i^{th}$ cation (M) in the phyllosilicate, $\rm x_i = \frac{z}{2}$ (i.e. the half charge of the cation), and $\rm k_i$ is the number of parts M within an oxide. For example, consider \ce{Fe2O3} forming the oxide for \ce{Fe^{+3}}, whereby k=2. But for one part Fe, then $\rm M_iO_{x_i}$ is written  as \ce{FeO3/2}. Again, term 1) represents the sum of the enthalpy of formation of the oxide for cation M, while term 2) represents the mixing energy of cations within specific sites, and is written as,
 
 \begin{equation}
-\rm \Delta H_{f,Ox}^o = -\frac{1}{N}\,\sum_{k=1}^{n_s-1}\,\sum_{l=1}^{n_s}\,\chi_k\,\chi_l\,(\Delta_HO^=site_l-\Delta_HO^=site_k),
+\rm \Delta H_{f,Ox}^o = -\frac{1}{N}\,\sum_{k=1}^{n_s-1}\,\sum_{l=1}^{n_s}\,\chi_k\,\chi_l\,(\Delta_HO^=site_l-\Delta_HO^=site_k) - \delta H_f^o(H_2O),
 \label{eq2}
 \end{equation}
-where $\rm \Delta_HO^=site$ is the enthalpy of a given site, N is the total number of oxygen atoms in phyllosilicate and $\rm \chi$ is the fraction oxygen atoms for a given site, written as, 
+where $\rm \Delta_HO^=site$ is the enthalpy of a given site and $\rm \delta H_f^o(H_2O)$ is water correction (not apparent in \cite{Blanc2015}, and shown here in section \ref{secWater}). In eq. \ref{eq2} N is the total number of oxygen atoms in the phyllosilicate and $\rm \chi$ is the fraction oxygen atoms for a given site, written as, 
 \begin{equation}
 \rm \chi_s = \frac{1}{N}\sum_{i=1}^{n_{c_s}} n_i\,x_i.
 \label{eq3}
 \end{equation}
-In \ref{eq3}, $\rm n_{c_s}$ are the number of different cations in a given site, where the sites are octaherdral (M), tetrahedral (T), interlayer (I) and (H) hydrogen. Subscripts k and l in \ref{eq2} are dummy variables for the index s in equation \ref{eq3}. For consistecy, the index i always denotes a specific cation, whereas s denotes a specific site. The cation distribution amongst the site is a function of the clay type, and is outlined below in section... The number of oxygen atoms can be verified by summing all $\chi_s$ over the $\rm n_s$ sites as $\rm 1 = \sum_{s=1}^{n_s}\chi_s$. Lastly 
+In eq. \ref{eq3}, $\rm n_{c_s}$ are the number of different cations in a given site, where the sites are octahedral (M), tetrahedral (T), interlayer (I) and (H) hydrogen. Subscripts {\bf k} and {\bf l} in \ref{eq2} are dummy variables for the index s in equation \ref{eq3}. For consistency, the index {\bf i} always denotes a specific cation, whereas {\bf s} denotes a specific site. The cation distribution amongst the site is a function of the clay type, and is outlined below in section \ref{dist}. The number of oxygen atoms can be verified by summing all $\chi_s$ over the $\rm n_s$ sites as $\rm 1 = \sum_{s=1}^{n_s}\chi_s$. Lastly, the enthalpy of a given site can be calculated from the $\rm \Delta_HO^=M_q^{z+}(clay)$, which is estimated by \cite{Blanc2015} from the polyhedral decomposition. The site enthalpy is given as,
 
+\begin{multline}
+\rm \Delta_HO^=site_s = \frac{\sum_{i}^{n_{c_s}}\,n_i\,x_i\,\Delta_HO^=M_i^{z+}(clay)}{\sum_{i}^{n_{c_s}}\,n_i\,x_i}  \\
+\rm+ k_{mix}\,\sum_{p=1}^{n_{c_s}-1}\,\sum_{q=p+1}^{n_{c_s}}\,\chi_p\,\chi_q\,(\Delta_HO^=M_p^{z+}(clay)-\Delta_HO^=M_q^{z+}(clay)),
+\label{eq4}
+\end{multline}
+where {\bf p} and {\bf q} are dummy variables to substitute for the index {\bf i}. For example, consider \ce{Fe^3+}, \ce{Fe^2+} and \ce{Mg^2+} sharing the octahedral M2 site. The pairs of interacting terms amongst cations can be thought of as a difference in electronegativity. The interacting terms would be p=1 and q=2 as \ce{Fe^3+}-- \ce{Fe^2+}, p=1 and q=3 as \ce{Fe^3+}-- \ce{Mg^2+}, and p=2 and q=3 as \ce{Fe^2+}-- \ce{Mg^2+}. In eq. \ref{eq4}, $\rm k_{mix}$ is a coefficient for the mixing energy for the M2, M3 and I sites. There is no mixing energy for the T, M1 and M4 sites. 
+
+
+\section{Distribution of cations}
+\label{dist}
+\noindent In the following list, total disorder indicates that the ratio of cations in a site is the same for all sites of the same type. For example, \ce{Fe^2+}:\ce{Mg^2+} in the M2 site is the same ratio as for the M1 site.
+
+\begin{itemize}
+\item[7\,\r{A}]
+\begin{itemize}
+\item[] T1 and T2:  Total disorder. T1 and T2 get the same quantity of cations.
+\item[] M1, M2 and M3: Total disorder. M2 is filled first with 2 moles of cation (2/5), then M3 is filled (2/5) and finally M1 takes the remaining 1/5 of the cations.
+\item[] $\rm H_i$ and $\rm H_e$: 1 part H goes into the $\rm H_i$ site while the remaining 3 parts H go into the $\rm H_e$ site. 
+\end{itemize}
+
+\item[10\,\r{A}]
+\begin{itemize}
+\item[] T1 and T2:  Total disorder. T1 and T2 get the same quantity of cations.
+\item[] M1, M2:  M2 is filled first (2/4), then M1 takes the remainder (2/4).
+\item[] $\rm H_i$: Both of the 2 H go into the $\rm H_i$ site.
+\end{itemize}
+
+\item[14\,\r{A}]
+\begin{itemize}
+\item[] T1 and T2:  Total disorder
+\item[] M1, M2, M3 and M4: Any \ce{Al^3+} not used on the T sites completely fills the M4 site (Lowenstein's avoidance rule), then the remaining sites are filled with the remaining \ce{Al^3+} and other cations in a disordered fashion following the order for 7\,\r{A} clays.
+\item[] $\rm H_i$ and $\rm H_b$: 1 part H goes into the $\rm H_i$ site while the remaining 3 parts H go into the $\rm H_b$ site. 
+\end{itemize}
+
+\end{itemize}
+
+\section{Interacting terms}
+
+Interactions among cations can be visualized in \cite{Blanc2015} Figure 1. In no particular order, the sites that interact are:
+\begin{itemize}
+\item[] I-T1, I-T2
+\item[] M1-T1, M1-T2
+\item[] M2-T1, M2-T2
+\item[] M3-M4
+\item[] He-T1, He-T2, He-M1, He-M2, 
+\item[] Hb-M3, Hb-M4, Hb-T1, Hb-T2
+\item[] Hi-M1, Hi-M2
+\end{itemize}
+
+\section{Hydrogen correction term}
+\label{secWater}
+An additional term that does not appear in \cite{Blanc2015} corrects for the free energy of hydrogen in the various sites as,
 \begin{equation}
-\rm \Delta_HO^=site_s = \frac{\sum_{i}^{n_{c_s}}\,n_i\,x_i\,\Delta_HO^=M_i^{z+}(clay)}{\sum_{i}^{n_{c_s}}\,n_i\,x_i} +
+\rm \delta H_f^o(H_2O) =  \sum_{s = 1}^{3}\,n_s\,x_s\,\bigg{[}\Delta H_f^o(H_2O)-\Delta H_f^o(H_2O)_{(clay)}\bigg{]}, 
 \end{equation}
-\begin{equation}
-\rm k_{mix}\,\sum_{p=1}^{n_{c_s}}\,\sum_{q=p+1}^{n_{c_s}-1}\,\chi_p\,\chi_q\,(\Delta_HO^=M_p^{z+}(clay)-\Delta_HO^=M_q^{z+}(clay))
-\end{equation}
+whereby the correction is the sum of the difference in formation enthalpies for water and the n=3 specific hydrogen sites (Hi, He and Hb). This $\rm \delta H_f^o(H_2O)$ correction term is subtracted from the mixing energy in eq. \ref{eq2}. 
+
+\section{Additional considerations}
+
+In \cite{Blanc2015} there is an error in the $\rm k_3$ term. As a result the enthalpy for 14\,\r{A} clays will be slightly different between the calculator output and the results posted in Blanc et al. (2015).
+\newpage
+
+\section{Example of how to use the calculator}
+
+Example mineral: nontrite (K) – \ce{K_{0.34}Fe^3+_{1.67}Al_{0.67}Si_{3.66}O10(OH)2}
+\newline
+\newline
+\noindent \underline{Input cells D3 – D75:}
+\newline
+\newline
+\noindent Start by entering the chemical formula into A1 (optional). Enter the number of moles into C1. 
+The number of moles of cations can be entered directly for the interlayer sites (e.g. 0.34 in cell D3). For the octahedral sites, the M2 sites get filled first with up to 2 moles of cations and the remainder gets placed into the M1 sites.  For nontrite, no cations will go into the M1 site, because the M2 site will use up all of the Al and Fe. The tetrahedral sites take 4 moles of cations, and all of the Si goes into the tetrahedral sites, leaving 4 – 3.66 = 0.34 moles of Al for the tetrahedral site, and 0.67 – 0.34 = 0.33 moles Al for the M2 site. For an example where the M1 site receives cations (M2 overflow), consider Saponite Fe with the octahedral sites as \ce{Mg2Fe^2+}. Given that there are 3 moles, and the M2 site can only take 2 moles, the Mg will occupy (2/3)*2 = 1.33 moles and the Fe will occupy (1/3)*2 = 0.67 moles. The M1 sites will take the remaining 2 – 1.33  = 0.67 moles of Mg and 1 – 0.67 = 0.33 moles of Al.  Si, Al and Fe are equally shared amongst T1 and T2 sites. For the example of nontrite, the T1 and T2 sites will both receive 1.83 Si and 0.17 Al. 
+The hydrogen sites get filled by the number of moles of H in the hydroxide. For example, with nontrite, there will be 2 moles of H in the Hi site. 
+To verify that the mineral is charge balanced, cell G78 will be highlighted green if the charge on all oxygen atoms is satisfied and highlighted red otherwise. 
+\newline
+\newline
+\noindent \underline{Column calculations}
+\newline
+\newline
+\noindent Sheet 1 (input): A lot of the computations are done in this sheet, but to compute the enthalpy of formation of the oxide in the mineral (Eq. 10) requires knowledge of the site specific interaction terms that are computed through matrix operations in sheets “site Mtx”, with mixing energy between cations in the I, M2 and M3 sites in sheets “I mix”, “M2 mix” and “M3 mix”. 
+\begin{itemize}
+\item[D:]  number of moles of cation in given site
+\item[E:] Charge of cation (z)
+\item[F:] Half charge of cation ($\rm x = \frac{z}{2}$)
+\item[G:] Number of moles of cation bonded to oxygen (n*x)
+\item[H:] Enthalpy of cation in clay $\rm \Delta_HO^=M_i^{z+}(clay)$ from minimization of \cite{Blanc2015} 
+\item[I:] Enthalpy of formation of oxide. Oxides of major elements taken from \cite{Blanc2015} and all other oxides taken from Appendix B in \cite{Faure1998}
+\item[J:] Computation of first term in Eq. 14
+\item[K:] Computation Eq. 14, which is column J + mixing energy
+\item[L:] Number of moles of cation bonded to one oxygen in the oxide 
+\item[M:] First term in Eq. 9. 
+\item[O:] Sum of first term in Eq. 9
+\item[P:] Eq. 10 (second term in Eq. 9)
+\item[Q:] Water correction term
+\item[R:] The output: $\rm \Delta H_f^o$ of the mineral
+\end{itemize}
+
+%\bibstyle{}
+\bibliographystyle{igs}
+\bibliography{refs}
 
 \end{document}
